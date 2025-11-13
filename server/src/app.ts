@@ -30,12 +30,12 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes:
-app.use('/user', UserRouter);
-app.use('/auth', AuthRouter);
-app.use('/order', OrderRouter);
-app.use('/cart', CartRouter);
-app.use('/review', ReviewRouter);
-app.use('/product', ProductRouter);
+app.use('/api/user', UserRouter);
+app.use('/api/auth', AuthRouter);
+app.use('/api/order', OrderRouter);
+app.use('/api/cart', CartRouter);
+app.use('/api/review', ReviewRouter);
+app.use('/api/product', ProductRouter);
 
 // Middlewares (after routes):
 app.use(errorMiddleware); // Every endpoint & middleware chain avaliable will eventually go to error middleware in case of exception thrown
