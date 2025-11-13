@@ -29,6 +29,15 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+	res.status(200).json({ 
+		status: 'ok', 
+		timestamp: new Date().toISOString(),
+		database: AppDataSource.isInitialized ? 'connected' : 'disconnected'
+	});
+});
+
 // Routes:
 app.use('/api/user', UserRouter);
 app.use('/api/auth', AuthRouter);

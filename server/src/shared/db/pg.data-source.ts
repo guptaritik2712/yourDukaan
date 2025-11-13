@@ -9,7 +9,7 @@ const relationshipsList = Object.values(Relationships);
 
 const baseConfig: DataSourceOptions = {
     type: 'postgres',
-    url: process.env.DB_CONNECTION_URL,
+    url: process.env.DATABASE_URL || process.env.DB_CONNECTION_URL,
     synchronize: true, // Auto-create tables in development
     namingStrategy: new SnakeNamingStrategy(),
     entities: [...entitiesList, ...relationshipsList],
