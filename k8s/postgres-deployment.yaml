@@ -4,7 +4,7 @@ metadata:
   name: postgres-pvc
   namespace: yourdukaan
 spec:
-  storageClassName: local-path
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
