@@ -54,13 +54,41 @@ export class PGDataTransformer {
     }
 }
 
+/**
+ * Helper to convert time string (e.g., "7d", "15m") to milliseconds
+ */
+export class TimeHelper {
+    /**
+     * Converts time string to milliseconds
+     * @param timeStr - Time string like "15m", "1h", "7d"
+     * @returns milliseconds
+     */
+    static toMilliseconds(timeStr: string): number {
+        const units: Record<string, number> = {
+            ms: 1,
+            s: 1000,
+            m: 60 * 1000,
+            h: 60 * 60 * 1000,
+            d: 24 * 60 * 60 * 1000,
+        };
+
+        const match = timeStr.match(/^(\d+)([smhd]|ms)$/);
+        if (!match) {
+            throw new Error(`Invalid time format: ${timeStr}`);
+        }
+
+        const [, value, unit] = match;
+        return parseInt(value, 10) * units[unit];
+    }
+}
+
 export class JWTHelper {
     public static signAccessToken(userPayload: JwtPayload): string {
         return jwt.sign(
             { user_id: userPayload.user_id, username: userPayload.username, email: userPayload.email },
             process.env.JWT_SECRET!,
             {
-                expiresIn: process.env.JWT_ACCESS_TOKEN_LENGTH!,
+                expiresIn: process.env.JWT_ACCESS_TOKEN_LENGTH || '15m',
             }
         );
     }
@@ -68,14 +96,26 @@ export class JWTHelper {
     public static signRefreshToken(userPayload: JwtPayload): string {
         return jwt.sign(
             { user_id: userPayload.user_id, username: userPayload.username, email: userPayload.email },
-            process.env.JWT_SECRET!,
+            process.env.REFRESH_TOKEN_SECRET || process.env.JWT_SECRET!,
             {
-                expiresIn: process.env.JWT_REFRESH_TOKEN_LENGTH!,
+                expiresIn: process.env.JWT_REFRESH_TOKEN_LENGTH || '7d',
             }
         );
     }
 
     public static verifyToken(token: string): jwt.JwtPayload | string {
         return jwt.verify(token, process.env.JWT_SECRET!);
+    }
+
+    public static verifyRefreshToken(token: string): jwt.JwtPayload | string {
+        return jwt.verify(token, process.env.REFRESH_TOKEN_SECRET || process.env.JWT_SECRET!);
+    }
+
+    /**
+     * Get refresh token maxAge in milliseconds
+     */
+    public static getRefreshTokenMaxAge(): number {
+        const tokenLength = process.env.JWT_REFRESH_TOKEN_LENGTH || '7d';
+        return TimeHelper.toMilliseconds(tokenLength);
     }
 }
