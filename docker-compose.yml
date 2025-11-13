@@ -36,13 +36,14 @@ services:
       - postgres
 
   # Backend Server
-  server:
+  server-service:
     build:
       context: ./server
       dockerfile: Dockerfile
     container_name: yourdukaan-server
     environment:
       NODE_ENV: production
+      PORT: 5000
       DB_CONNECTION_URL: postgresql://yourdukaan:yourdukaan123@postgres:5432/yourdukaan
       JWT_SECRET: ${JWT_SECRET:-a098828ca1dad954017359a97b39e61aa767fd26828ea9f9bf0a73e2bc568385e3433de27fdd487ed1909b6ec6a065f4594a8dccae90c66e49eee00653f89ec5}
       JWT_ACCESS_TOKEN_LENGTH: 15m
@@ -52,7 +53,7 @@ services:
       BCRYPT_HASH_LENGTH: 10
       CLIENT_PROD_URL: http://localhost
     ports:
-      - "3000:3000"
+      - "5000:5000"
     networks:
       - yourdukaan-network
     depends_on:
@@ -73,7 +74,7 @@ services:
     networks:
       - yourdukaan-network
     depends_on:
-      - server
+      - server-service
     restart: unless-stopped
 
 volumes:
