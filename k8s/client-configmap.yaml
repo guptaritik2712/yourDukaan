@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-config
+  namespace: yourdukaan
+data:
+  VITE_API_URL: "http://server-service:5000"
