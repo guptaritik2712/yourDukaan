@@ -12,12 +12,12 @@ import type {
 
 class ProductController {
     public static async getManyProducts(req: Request, res: Response, next: NextFunction) {
-        const paramsProducts = req.body as getManyProductsParameters;
+        const paramsProducts = req.query as unknown as getManyProductsParameters;
         const products = await ProductService.getManyProducts(paramsProducts);
         res.status(HttpStatusCode.OK).json({products: products});
     }
     public static async getOneProduct(req: Request, res: Response, next: NextFunction) {
-        const paramsProduct = req.body as getOneProductParameters;
+        const paramsProduct = { product_id: req.params.product_id } as getOneProductParameters;
         const product = await ProductService.getOneProduct(paramsProduct);
         res.status(HttpStatusCode.OK).json({product: product});
     }
