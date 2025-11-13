@@ -4,4 +4,4 @@ metadata:
   name: client-config
   namespace: yourdukaan
 data:
-  VITE_SERVER_URL: "http://server-service:5000"
+  VITE_SERVER_URL: "/api"
