@@ -20,11 +20,11 @@ spec:
         ports:
         - containerPort: 80
         env:
-        - name: VITE_API_URL
+        - name: VITE_SERVER_URL
           valueFrom:
             configMapKeyRef:
               name: client-config
-              key: VITE_API_URL
+              key: VITE_SERVER_URL
 ---
 apiVersion: v1
 kind: Service

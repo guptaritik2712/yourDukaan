@@ -29,6 +29,8 @@ jobs:
         context: ./client
         file: ./client/Dockerfile
         push: true
+        build-args: |
+          VITE_SERVER_URL=/api
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/yourdukaan-client:latest
           ${{ secrets.DOCKER_USERNAME }}/yourdukaan-client:${{ github.sha }}
