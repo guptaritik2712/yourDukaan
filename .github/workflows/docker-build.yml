@@ -1,4 +1,4 @@
-name: Build and Push Docker Images
+name: CI/CD - Build and Push Docker Images
 
 on:
   push:
@@ -29,7 +29,9 @@ jobs:
         context: ./client
         file: ./client/Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/yourdukaan-client:latest
+        tags: |
+          ${{ secrets.DOCKER_USERNAME }}/yourdukaan-client:latest
+          ${{ secrets.DOCKER_USERNAME }}/yourdukaan-client:${{ github.sha }}
     
     - name: Build and push Server image
       uses: docker/build-push-action@v4
@@ -37,4 +39,6 @@ jobs:
         context: ./server
         file: ./server/Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/yourdukaan-server:latest
+        tags: |
+          ${{ secrets.DOCKER_USERNAME }}/yourdukaan-server:latest
+          ${{ secrets.DOCKER_USERNAME }}/yourdukaan-server:${{ github.sha }}

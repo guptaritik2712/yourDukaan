@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: YOUR_DOCKER_USERNAME/yourdukaan-client:latest
+        image: guptaritik2712/yourdukaan-client:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
