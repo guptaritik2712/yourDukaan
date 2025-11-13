@@ -1,0 +1,5 @@
+# Build with custom server URL
+docker-compose build --build-arg VITE_SERVER_URL=http://localhost:3000
+
+# Or for production with different URL
+# docker-compose build --build-arg VITE_SERVER_URL=https://api.yourproduction.com

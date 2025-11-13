@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: yourdukaan-postgres
+    environment:
+      POSTGRES_USER: yourdukaan
+      POSTGRES_PASSWORD: yourdukaan123
+      POSTGRES_DB: yourdukaan
+    ports:
+      - "5432:5432"
+    volumes:
+      - yourdukaan-data:/var/lib/postgresql/data
+    networks:
+      - yourdukaan-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yourdukaan"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # pgAdmin
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: yourdukaan-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@yourdukaan.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    networks:
+      - yourdukaan-network
+    depends_on:
+      - postgres
+
+  # Backend Server
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: yourdukaan-server
+    environment:
+      NODE_ENV: production
+      DB_CONNECTION_URL: postgresql://yourdukaan:yourdukaan123@postgres:5432/yourdukaan
+      JWT_SECRET: ${JWT_SECRET:-a098828ca1dad954017359a97b39e61aa767fd26828ea9f9bf0a73e2bc568385e3433de27fdd487ed1909b6ec6a065f4594a8dccae90c66e49eee00653f89ec5}
+      JWT_ACCESS_TOKEN_LENGTH: 15m
+      JWT_REFRESH_TOKEN_LENGTH: 7d
+      COOKIE_REFRESH_TOKEN_NAME: refreshToken
+      COOKIE_REFRESH_TOKEN_AGE: 604800000
+      BCRYPT_HASH_LENGTH: 10
+      CLIENT_PROD_URL: http://localhost
+    ports:
+      - "3000:3000"
+    networks:
+      - yourdukaan-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Frontend Client
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        - VITE_SERVER_URL=http://localhost:3000
+    container_name: yourdukaan-client
+    ports:
+      - "80:80"
+    networks:
+      - yourdukaan-network
+    depends_on:
+      - server
+    restart: unless-stopped
+
+volumes:
+  yourdukaan-data:
+
+networks:
+  yourdukaan-network:
+    driver: bridge
