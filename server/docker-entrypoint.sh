@@ -3,7 +3,7 @@
 # Wait for PostgreSQL to be ready
 echo "⏳ Waiting for PostgreSQL to be ready..."
 
-until pg_isready -h postgres -p 5432 -U yourdukaan; do
+until pg_isready -h postgres-service -p 5432 -U yourdukaan; do
   echo "⏳ PostgreSQL is unavailable - sleeping"
   sleep 2
 done
