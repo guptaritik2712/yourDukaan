@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+  namespace: yourdukaan
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+      - name: server
+        image: YOUR_DOCKER_USERNAME/yourdukaan-server:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DATABASE_URL
+          value: postgresql://postgres:yourdukaan123@postgres-service:5432/yourdukaan
+        - name: JWT_SECRET
+          value: your-secret-key-here
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server-service
+  namespace: yourdukaan
+spec:
+  selector:
+    app: server
+  ports:
+  - port: 5000
+    targetPort: 5000
+  type: ClusterIP
