@@ -98,14 +98,6 @@ yourDukaan is a full-stack e-commerce web application built with modern web and 
 - [**IconScout**](https://iconscout.com/) - For the lottie animation and svg vector used in our home and authentication pages.
 - [**React SVG Icons**](https://reactsvgicons.com/) - For most of the icons used in the project.
 
-## 🎉 Contributors <a name="contributors"></a>
-
-<a href="https://github.com/guptaritik2712/yourDukaan/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=guptaritik2712/yourDukaan" />
-</a>
-
 ## 📄 License <a name="license"></a>
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-# Test change
-# Test change
