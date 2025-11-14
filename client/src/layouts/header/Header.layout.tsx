@@ -212,7 +212,7 @@ export function Header() {
                         {/* Github */}
                         <li className="pc-sm:hidden">
                             <Link
-                                to="https://github.com/guptaritik2712/e-commerce-app"
+                                to="https://github.com/guptaritik2712/yourDukaan"
                                 className="p-2 rounded-lg bg-background-100 dark:bg-background-800
                                 hover:bg-primary-50 dark:hover:bg-primary-900
                                 transition-all duration-300 border-2 border-transparent
